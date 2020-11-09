@@ -17,15 +17,7 @@ class App extends React.Component {
     this.setState({ ...this.state, index: index })
   }
   render() {
-    return (
-      <React.Fragment>
-        <div>
-          <button onClick={this.changeQuote} style={{ width: '10vw', height: '10vh', fontSize: 30 ,margin:'auto',display:'block'}}>Change Quote</button>
-          <Quote quoteAuthor={quotes[this.state.index].quoteAuthor} quoteText={quotes[this.state.index].quoteText} />
-        </div>
-
-      </React.Fragment>
-    )
+    return 
   }
 }
 
