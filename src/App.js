@@ -1,54 +1,41 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import './util.css';
-// import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
-import Gallery from './Components/Gallery.js';
-import { FormGroup, FormControl, InputGroup} from 'react-bootstrap'
-
-class App extends Component {
+import React from 'react'
+import { Main } from './Components/Main'
+import { Search } from './Components/Search'
+class App extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-      items: []
-    };
+    super(props)
+    this.state = {}
+    // this.search = this.search.bind(this)
   }
+  // search(){
+  // api_key=${keyApi}&q=${e.target.value}
+  // }
+  search = (e) => {
+    if (e.key == 'Enter') {
+      const url_target =
+        "https://api.globalgiving.org/api/public/projectservice/featured/projects?";
 
-  search() {
-    const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=';
-    fetch(`${API_URL}${this.state.query}`)
-      .then(response => response.json())
-      .then(json => {
-        let {items} = json;
-        this.setState({items})
-      }); // TODO: Add a catch method here in case the API call fails
+      const api_key = "b85ce2c1-3e20-435e-aca8-0fb6467a1b40";
+
+      const url = `${url_target}?api_key=${api_key}`;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      }).then(res => res.json())
+        .then(data => {
+          console.log(data)
+        }).catch(err => console.log(err))
+    }
   }
-
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Book Finder</h1>
-        </header>
-        <div className="container main-content">
-          <FormGroup>
-            <InputGroup>
-              <FormControl type="text" placeholder="Search for a book"
-              onChange={ event => this.setState({ query: event.target.value }) }
-              onKeyPress={ event => {
-                if ('Enter' === event.key) {
-                  this.search();
-                }
-              }} />
-              <InputGroup.Addon onClick={() => this.search()}>
-                <Glyphicon glyph="search"/>
-              </InputGroup.Addon>
-            </InputGroup>
-          </FormGroup>
-          <Gallery items={this.state.items} />
-        </div>
+      <div className="App border">
+        <Search search={this.search} />
+        <Main books={this.state.books ? this.state.books : []} />
       </div>
     );
   }
